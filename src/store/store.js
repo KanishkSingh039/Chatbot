@@ -1,14 +1,14 @@
-const { create } = require("zustand");
+import { create } from "zustand";
 
 
-const bot = create(set => ({
+export const UseApi = create(set => ({
     response: "",
-    apiresponse: async () => {
-        const [userInput, setuserInput] = useState('');
+    chat: [],
+    apiresponse: async (userInput) => {
         const API_KEY = import.meta.env.VITE_GEMINII_KEY;
         const GEMINI_URL =
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
-        const response = await fetch(GEMINI_URL, {
+        const respons = await fetch(GEMINI_URL, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -21,8 +21,19 @@ const bot = create(set => ({
                 }]
             })
         });
-        const res = await response.json();
-        set({
-        })
+        const res = await respons.json();
+        const Output = res.candidates?.[0]?.content?.parts?.[0]?.text;
+        console.log(res);
+        // console.log(res?.candidates?.[0]?.content?.parts?.[0]?.text);
+        console.log(Output);
+        set(state => ({
+            response: Output,
+            chat: [...state.chat,
+            {
+                user: userInput,
+                bot: Output
+            }
+            ]
+        }))
     }
 }))
