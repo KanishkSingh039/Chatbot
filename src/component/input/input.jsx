@@ -8,8 +8,11 @@ function Input() {
     const foc = useRef();
     const api = UseApi(state => state.apiresponse);
     function responding() {
+        // const user = userinput;
+        api(userinput);
+        setuserInput("");
+        console.log(userinput);
 
-        api(userinput)
     }
     useEffect(() => {
         foc.current.focus();
@@ -25,7 +28,9 @@ function Input() {
                     <Chat />
                 </div>
                 <div className=" flex justify-between items-center w-1/2 fixed bottom-5 left-[25%] right-[25%] border-solid border-2 rounded-4xl pr-2 py-2  bg-gray-600 h-15 border-transparent">
-                    <input ref={foc} name="question" id="question" className="w-[80%] border-0 rounded-3xl border-transparent h-full px-2 outline-none focus:outline-none focus:ring-0 focus:border-none m-5" type="text" onChange={event => setuserInput(event.target.value)} placeholder="Describe what to know" />
+                    <input ref={foc} name="question" id="question" className="w-[80%] border-0 rounded-3xl border-transparent h-full px-2 outline-none focus:outline-none focus:ring-0 focus:border-none m-5" type="text" value={userinput} onChange={event => setuserInput(event.target.value)} placeholder="Describe what to know" onKeyDown={e => {
+                        if (e.key === 'Enter') { responding() }
+                    }} />
                     <button onClick={responding} className="bg-white font-bold text-3xl text-black rounded-4xl flex px-3  cursor-pointer">↑</button>
                 </div>
             </div>

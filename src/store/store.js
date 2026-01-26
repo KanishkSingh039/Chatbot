@@ -4,10 +4,12 @@ import { create } from "zustand";
 export const UseApi = create(set => ({
     response: "",
     chat: [],
+    loading: true,
     apiresponse: async (userInput) => {
         const API_KEY = import.meta.env.VITE_GEMINII_KEY;
         const GEMINI_URL =
             `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+        set(state => ({ loading: false }))
         const respons = await fetch(GEMINI_URL, {
             method: 'POST',
             headers: {
@@ -22,6 +24,7 @@ export const UseApi = create(set => ({
             })
         });
         const res = await respons.json();
+        set(state => ({ loading: true }))
         const Output = res.candidates?.[0]?.content?.parts?.[0]?.text;
         console.log(res);
         // console.log(res?.candidates?.[0]?.content?.parts?.[0]?.text);

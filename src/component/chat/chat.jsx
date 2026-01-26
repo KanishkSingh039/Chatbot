@@ -2,6 +2,8 @@ import { UseApi } from '../../store/store'
 
 function Chat() {
     const chat = UseApi(state => state.chat);
+    const loading = UseApi(state => state.loading)
+
     // console.log(chat);
 
     return (
@@ -20,6 +22,7 @@ function Chat() {
                             </li>
                         )
                     }) : (<p>Ask</p>)
+
                 }
             </ul>
         </div>
